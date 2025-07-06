@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Rental Shop</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Icons (lucide-react CDN build for plain HTML) -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1e4acc;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-700: #374151;
+      --radius: 1rem;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: var(--gray-100);
+      color: var(--gray-700);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Navigation */
+    nav {
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 6rem 2rem 4rem;
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    .hero button {
+      background: #fff;
+      color: var(--primary);
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .hero button:hover {
+      background: var(--gray-200);
+    }
+
+    /* Products */
+    .products {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .products h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-body h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .price {
+      font-weight: 500;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .card-body button {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .card-body button:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Cart Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 100;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: var(--radius);
+      max-width: 500px;
+      width: 100%;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 1rem;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+    }
+
+    table td {
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .checkout {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Contact */
+    .contact {
+      padding: 4rem 2rem;
+      background: #fff;
+    }
+
+    .contact h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    .contact form {
+      max-width: 600px;
+      margin: auto;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .contact form input,
+    .contact form textarea {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      font-size: 1rem;
+    }
+
+    .contact form button {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .contact form button:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #fff;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">Smart Rental Shop</div>
+    <div class="nav-links">
+      <a href="#products">Products</a>
+      <a href="#contact">Contact</a>
+      <a href="javascript:void(0)" id="openCart"><i data-lucide="shopping-cart"></i> Cart (<span id="cartCount">0</span>)</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Your One‑Stop Rental Destination</h1>
+    <p>Rent gadgets, appliances, tools, and more at affordable daily rates. Smart choices for smart living.</p>
+    <button onclick="document.getElementById('products').scrollIntoView({behavior: 'smooth'});">Browse Products</button>
+  </section>
+
+  <!-- Products Section -->
+  <section id="products" class="products">
+    <h2>Available Products</h2>
+    <div class="product-grid" id="productGrid">
+      <!-- Cards injected by JS -->
+    </div>
+  </section>
+
+  <!-- Cart Modal -->
+  <div class="modal" id="cartModal" aria-hidden="true">
+    <div class="modal-content">
+      <button class="close-modal" id="closeCart" aria-label="Close Cart"><i data-lucide="x"></i></button>
+      <h2>Your Cart</h2>
+      <table id="cartTable"></table>
+      <div class="checkout">
+        <strong>Total: ₹<span id="cartTotal">0</span></strong>
+        <button id="checkoutBtn">Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <form id="contactForm">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="message" rows="4" placeholder="Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Smart Rental Shop. All rights reserved.
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Initialize lucide icons
+    lucide.createIcons();
+
+    // Sample product data (could be fetched from backend/API)
+    const products = [
+      {
+        id: 1,
+        name: "DSLR Camera",
+        price: 500,
+        img: "https://images.unsplash.com/photo-1519183071298-a2962ed9e385?auto=format&fit=crop&w=600&q=80",
+      },
+      {
+        id: 2,
+        name: "Gaming Laptop",
+        price: 1200,
+        img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80",
+      },
+      {
+        id: 3,
+        name: "Power Drill",
+        price: 150,
+        img: "https://images.unsplash.com/photo-1590689422458-364ec4a39dcc?auto=format&fit=crop&w=600&q=80",
+      },
+      {
+        id: 4,
+        name: "Smartphone Gimbal",
+        price: 250,
+        img: "https://images.unsplash.com/photo-1518823801687-38572a287d71?auto=format&fit=crop&w=600&q=80",
+      },
+    ];
+
+    // Render products
+    const productGrid = document.getElementById("productGrid");
+    products.forEach((p) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${p.img}" alt="${p.name}" />
+        <div class="card-body">
+          <div>
+            <h3>${p.name}</h3>
+            <p class="price">₹${p.price} / day</p>
+          </div>
+          <button onclick="addToCart(${p.id})">Add to Cart</button>
+        </div>
+      `;
+      productGrid.appendChild(card);
+    });
+
+    // Cart logic
+    let cart = [];
+
+    const cartModal = document.getElementById("cartModal");
+    const openCart = document.getElementById("openCart");
+    const closeCart = document.getElementById("closeCart");
+    const cartTable = document.getElementById("cartTable");
+    const cartCount = document.getElementById("cartCount");
+    const cartTotal = document.getElementById("cartTotal");
+
+    openCart.addEventListener("click", () => {
+      renderCart();
+      cartModal.style.display = "flex";
+      cartModal.setAttribute("aria-hidden", "false");
+    });
+
+    closeCart.addEventListener("click", () => closeModal());
+
+    window.addEventListener("click", (e) => {
+      if (e.target === cartModal) closeModal();
+    });
+
+    function closeModal() {
+      cartModal.style.display = "none";
+      cartModal.setAttribute("aria-hidden", "true");
+    }
+
+    function addToCart(id) {
+      const product = products.find((p) => p.id === id);
+      const existing = cart.find((item) => item.id === id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      updateCartBadge();
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter((item) => item.id !== id);
+      renderCart();
+      updateCartBadge();
+    }
+
+    function updateCartBadge() {
+      const count = cart.reduce((acc, item) => acc + item.qty, 0);
+      cartCount.textContent = count;
+    }
+
+    function renderCart() {
+      cartTable.innerHTML = "";
+      let total = 0;
+      cart.forEach((item) => {
+        total += item.price * item.qty;
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${item.name} (x${item.qty})</td>
+          <td>₹${item.price * item.qty}</td>
+          <td><button onclick="removeFromCart(${item.id})" style="background:none;border:none;cursor:pointer;"><i data-lucide='trash-2'></i></button></td>`;
+        cartTable.appendChild(row);
+      });
+      cartTotal.textContent = total;
+      lucide.createIcons();
+    }
+
+    document.getElementById("checkoutBtn").addEventListener("click", () => {
+      if (!cart.length) {
+        alert("Your cart is empty!");
+        return;
+      }
+      alert("Thank you! Your rental request has been received. We will contact you shortly.");
+      cart = [];
+      updateCartBadge();
+      closeModal();
+    });
+
+    // Contact form (dummy)
+    document.getElementById("contactForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("Thanks for reaching out! We'll get back to you soon.");
+      e.target.reset();
+    });
+
+    // Footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+<section class="contact" style="background-color: #ecf0f1; border-radius: 12px; padding: 30px; text-align: center; max-width: 600px; margin: 40px auto;">
+  <h2 style="margin-bottom: 20px;">Contact Krishna Dadiya</h2>
+  <p style="margin: 10px 0;"><strong>Email:</strong> 
+    <a href="mailto:krishnadadiyal@gmail.com" style="color: #2980b9; text-decoration: none;">
+      krishnadadiyal@gmail.com
+    </a>
+  </p>
+  <p style="margin: 10px 0;"><strong>Mobile:</strong> 
+    <a href="tel:+918956348902" style="color: #2980b9; text-decoration: none;">
+      +91 8956348902
+    </a>
+  </p>
+  <p style="margin-top: 20px;">For bookings and inquiries, reach out anytime!</p>
+</section>
+
+</body>
+</html>
